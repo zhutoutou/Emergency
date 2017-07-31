@@ -6,7 +6,7 @@ using ZIT.EMERGENCY.Utility;
 using ZIT.EMERGENCY.Model;
 using System.Text.RegularExpressions;
 using ZIT.LOG;
-using ZIT.EMERGENCY.DataAccess;
+using ZIT.EMERGENCY.fnDataAccess;
 
 namespace ZIT.EMERGENCY.Controller.BusinessServer
 {
@@ -15,18 +15,12 @@ namespace ZIT.EMERGENCY.Controller.BusinessServer
         /// <summary>
         /// WebService代理类
         /// </summary>
-        private IDBsendNewInfo DBsendNewInfo;
+        private IGetDataAccess getData;
 
-        //Dictionary<string, VehInfo> _VehMap = new Dictionary<string, VehInfo>();
+        Dictionary<string, DateTime> _VehMap = new Dictionary<string, DateTime>();
         public GServerMsgHandler()
         {
-            DBsendNewInfo = DataAccess.DataAccess.GetDBsendNewInfo();
-            InitVehMap();
-        }
-
-        private void InitVehMap()
-        {
-            //_VehMap = DBsendNewInfo.getInitVehMap();
+            getData = DataAccess.GetDataAccess();
         }
 
         public void HandleMsg(string strMsg)
@@ -109,25 +103,48 @@ namespace ZIT.EMERGENCY.Controller.BusinessServer
             string strcarID, strLSH, strCCXH;
             try
             {
+                strcarID = GetValueByKey(strMsg, "ID");
+                strLSH = GetValueByKey(strMsg, "LSH");
+                if (_VehMap.ContainsKey(strcarID))
+                {
+                    TimeSpan ts = DateTime.Now - _VehMap[strcarID];
+                    if (ts.TotalMinutes < SysParameters.VehInfoInterval)
+                    {
+                        return;
+                    }
+                }
                 if (strMsg.Substring(0, 1) == "(" && strMsg.Substring(strMsg.Length - 1, 1) == ")")
                 {
-                    strcarID = GetValueByKey(strMsg, "ID");
-                    strLSH = GetValueByKey(strMsg, "LSH");
+                    
                     switch (strLSH.Length)
                     {
                         case 12:
                         case 19:
-                                DBsendNewInfo.sendNewLSVehInfo(strcarID, strLSH, "");
+                            strCCXH = "";
                             break;
                         case 14:
                         case 21:
                                 strCCXH = strLSH.Substring(strLSH.Length - 2, 2);
                                 strLSH = strLSH.Substring(0, strLSH.Length - 2);
-                                DBsendNewInfo.sendNewLSVehInfo(strcarID, strLSH, strCCXH);
                             break;
                         default :
-                            DBsendNewInfo.sendNewLSVehInfo(strcarID, "", "");
+                            strLSH = "";
+                            strCCXH = "";
                             break;
+                    }
+                    List<VEHICLEHISTROYSTATE> aci=getData.getNewLSVehInfo(strcarID,strLSH,strCCXH);
+                    if (aci.Count > 0)
+                    {
+                        IDataExChangeDataAccess Data = DataAccess.GetDataExChangeDataAccess();
+                        Data.insertNewLSVehInfo(aci);
+                        if (_VehMap.ContainsKey(strcarID))
+                        {
+                            _VehMap[strcarID] = DateTime.Now;
+                        }
+                        else
+                        {
+                            _VehMap.Add(strcarID, DateTime.Now);
+                        }
                     }
                 }
             }

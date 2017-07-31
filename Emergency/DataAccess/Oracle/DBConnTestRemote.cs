@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MySql.Data.MySqlClient;
+using ZIT.EMERGENCY.Utility;
 
-namespace ZIT.EMERGENCY.fnDataAccess.Mysql
+namespace ZIT.EMERGENCY.fnDataAccess.Oracle
 {
-    class DBConnTest : IDBConnTest
+    class DBConnTestRemote : IDBConnTest
     {
         public bool DBIsConnected()
         {
-            bool bIsConnected = DbHelperMySQL.IsConnected();
+            bool bIsConnected = DB120Helpcle.IsConnected();
             return bIsConnected;
         }
 

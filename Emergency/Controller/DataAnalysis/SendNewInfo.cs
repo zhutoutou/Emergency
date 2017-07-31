@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using ZIT.EMERGENCY.Model;
-using ZIT.EMERGENCY.DataAccess;
 using ZIT.EMERGENCY.Utility;
 using ZIT.Communication.Comm.Communication.Messages;
 using ZIT.LOG;
+using ZIT.EMERGENCY.fnDataAccess;
 
 namespace ZIT.EMERGENCY.Controller.DataAnalysis
 {
@@ -15,16 +15,16 @@ namespace ZIT.EMERGENCY.Controller.DataAnalysis
     {
         private Thread td;
 
-        private IDBsendNewInfo sendNewInfo;
+        private IGetDataAccess getData;
 
-        public static int n_ALAEM = 0;
+        public static int n_ALAEM = SysParameters.InsertInterval+1;
 
-        public static int n_Veh = 0;
+        public static int n_Veh = SysParameters.InsertInterval / 5 +1;
 
         public SendNewInfo()
         {
-            td = new Thread(new ThreadStart(Todo));
-            sendNewInfo = DataAccess.DataAccess.GetDBsendNewInfo();
+            td = new Thread(new ThreadStart(SyncLcoalInfo));
+            getData = DataAccess.GetDataAccess();
         }
 
         public void Start()
@@ -35,7 +35,7 @@ namespace ZIT.EMERGENCY.Controller.DataAnalysis
         /// <summary>
         ///  操作线程
         /// </summary>
-        private void Todo()
+        private void SyncLcoalInfo()
         {
             while (true)
             {
@@ -43,12 +43,22 @@ namespace ZIT.EMERGENCY.Controller.DataAnalysis
                 {
                     if (n_ALAEM > SysParameters.InsertInterval)
                     {
-                        sendNewInfo.sendNewEventInfo();
+                        List<ALARM_EVENT_INFO> aci = getData.getNewEventInfo();
+                        if (aci.Count > 0)
+                        {
+                            IDataExChangeDataAccess Data = DataAccess.GetDataExChangeDataAccess();
+                            Data.insertNewEventInfo(aci);
+                        }
                         n_ALAEM = 0;
                     }
                     if (n_Veh > (SysParameters.InsertInterval/5))
                     {
-                        sendNewInfo.sendNewSSVehInfo();
+                        List<VEHICLEREALSTATUS> aci = getData.getNewSSVehInfo();
+                        if (aci.Count > 0)
+                        {
+                            IDataExChangeDataAccess Data = DataAccess.GetDataExChangeDataAccess();
+                            Data.insertNewSSVehInfo(aci);
+                        }
                         n_Veh = 0;
                     }
                     n_ALAEM++;

@@ -8,10 +8,10 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using ZIT.LOG;
-using ZIT.EMERGENCY.DataAccess;
+using ZIT.EMERGENCY.fnDataAccess;
 using ZIT.EMERGENCY.Utility;
 
-namespace ZIT.EMERGENCY.DataAccess.Mysql
+namespace ZIT.EMERGENCY.fnDataAccess.Mysql
 {
     /// <summary>
     /// 数据访问抽象基础类
@@ -23,7 +23,7 @@ namespace ZIT.EMERGENCY.DataAccess.Mysql
         {            
         }
 
-        public static string connectionString = SysParameters.DBConnectString;
+        public static string connectionString = SysParameters.DBConnectStringLocal;
 
         #region 公用方法
 

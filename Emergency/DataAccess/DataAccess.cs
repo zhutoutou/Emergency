@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Reflection;
 using ZIT.EMERGENCY.Utility;
 
-namespace ZIT.EMERGENCY.DataAccess
+namespace ZIT.EMERGENCY.fnDataAccess
 {
     public class DataAccess
     {
@@ -14,7 +14,7 @@ namespace ZIT.EMERGENCY.DataAccess
         /// 定义根程序集
         /// </summary>
         private static readonly string strAssemblyName = "DataAccess";
-        private static readonly string strNameSpaceName = "ZIT.EMERGENCY.DataAccess";
+        private static readonly string strNameSpaceName = "ZIT.EMERGENCY.fnDataAccess";
         /// <summary>
         /// 读取数据库类型
         /// </summary>
@@ -23,18 +23,28 @@ namespace ZIT.EMERGENCY.DataAccess
         /// 数据访问类:DBConnTest
         /// </summary>
         /// <returns></returns>
-        public static IDBConnTest GetDBConnTest()
+        public static IDBConnTest GetDBConnTestLocal()
         {
-            string strClassName = strNameSpaceName + "." + db + ".DBConnTest";
+            string strClassName = strNameSpaceName + "." + db + ".DBConnTestLocal";
             return (IDBConnTest)Assembly.Load(strAssemblyName).CreateInstance(strClassName);
         }
 
-
-
-        public static IDBsendNewInfo GetDBsendNewInfo()
+        public static IDBConnTest GetDBConnTestRemote()
         {
-            string strClassName = strNameSpaceName + "." + db + ".DBsendNewInfo";
-            return (IDBsendNewInfo)Assembly.Load(strAssemblyName).CreateInstance(strClassName);
+            string strClassName = strNameSpaceName + "." + db + ".DBConnTestRemote";
+            return (IDBConnTest)Assembly.Load(strAssemblyName).CreateInstance(strClassName);
+        }
+
+        public static IGetDataAccess GetDataAccess()
+        {
+            string strClassName = strNameSpaceName + "." + db + ".GetDataAccess";
+            return (IGetDataAccess)Assembly.Load(strAssemblyName).CreateInstance(strClassName);
+        }
+
+        public static IDataExChangeDataAccess GetDataExChangeDataAccess()
+        {
+            string strClassName = strNameSpaceName + "." + db + ".DataExChangeDataAccess";
+            return (IDataExChangeDataAccess)Assembly.Load(strAssemblyName).CreateInstance(strClassName);
         }
     }
 }

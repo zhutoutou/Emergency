@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAnalysis\ConnectTestRemote.cs" />
     <Compile Include="GPSServer\GServer.cs" />
     <Compile Include="GPSServer\GServerMsgHandler.cs" />
     <Compile Include="CoreService.cs" />
-    <Compile Include="DataAnalysis\ConnectTest.cs" />
+    <Compile Include="DataAnalysis\ConnectTestLocal.cs" />
     <Compile Include="DataAnalysis\SendNewInfo.cs" />
     <Compile Include="NetStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,9 +59,9 @@
       <Project>{11912480-CCB9-489B-A745-86822A8101EA}</Project>
       <Name>COM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+    <ProjectReference Include="..\DataAccess\fnDataAccess.csproj">
       <Project>{F639F7FF-C459-4ED8-B3C7-1396A8B6A62A}</Project>
-      <Name>DataAccess</Name>
+      <Name>fnDataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\LOG\LOG.csproj">
       <Project>{81326D76-FFD1-4637-BA8C-4CD73A75F196}</Project>

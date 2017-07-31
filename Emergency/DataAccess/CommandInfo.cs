@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 
-namespace ZIT.EMERGENCY.DataAccess
+namespace ZIT.EMERGENCY.fnDataAccess
 {
     public enum EffentNextType
     {

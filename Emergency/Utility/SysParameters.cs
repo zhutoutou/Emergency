@@ -18,12 +18,21 @@ namespace ZIT.EMERGENCY.Utility
             InsertInterval = short.Parse(ConfigurationManager.AppSettings["InsertInterval"]);
             try
             {
-                DBConnectString = ConfigurationManager.AppSettings["DBConnectString"];
+                DBConnectStringLocal = ConfigurationManager.AppSettings["DBConnectStringLocal"];
             }
             catch
             {
-                DBConnectString = "Data Source=ORCL;User ID=appinfo;Password=appinfo;";
+                DBConnectStringLocal = "Data Source=ORCL;User ID=appinfo;Password=appinfo;";
             }
+            try
+            {
+                DBConnectStringRemote = ConfigurationManager.AppSettings["DBConnectStringRemote"];
+            }
+            catch
+            {
+                DBConnectStringRemote = "Data Source=ORCL;User ID=appinfo;Password=appinfo;";
+            }
+            VehInfoInterval = short.Parse(ConfigurationManager.AppSettings["VehInfoInterval"]);
         }
         /// <summary>
         /// 数据库类型 Oracle; Mysql
@@ -45,7 +54,10 @@ namespace ZIT.EMERGENCY.Utility
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        public static string DBConnectString;
+        public static string DBConnectStringLocal;
 
+        public static string DBConnectStringRemote;
+
+        public static int VehInfoInterval; // 5分钟
     }
 }

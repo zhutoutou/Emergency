@@ -54,7 +54,8 @@ namespace ZIT.EMERGENCY.UI
             {
                 CoreService control = CoreService.GetInstance();
                 control.BServerConnectionStatusChanged += BServer_ConnectionStatusChanged;
-                control.DBConnectStatusChanged += DB_ConnectionStatusChanged;
+                control.DBLConnectStatusChanged += DBL_ConnectionStatusChanged;
+                control.DBRConnectStatusChanged += DBR_ConnectionStatusChanged;
                 control.StartService();
             }
             catch (Exception ex)
@@ -94,19 +95,43 @@ namespace ZIT.EMERGENCY.UI
         /// <summary>
         /// 与数据库连接状态改变事件
         /// </summary>
-        private void DB_ConnectionStatusChanged(object sender, StatusEventArgs e)
+        private void DBL_ConnectionStatusChanged(object sender, StatusEventArgs e)
         {
-            lblDBConnectStaus.BeginInvoke(new MethodInvoker(() =>
+            lblDBLConnectStaus.BeginInvoke(new MethodInvoker(() =>
             {
                 switch (e.Status)
                 {
                     case NetStatus.DisConnected:
-                        lblDBConnectStaus.Text = "断开";
-                        lblDBConnectStaus.ForeColor = Color.Red;
+                        lblDBLConnectStaus.Text = "断开";
+                        lblDBLConnectStaus.ForeColor = Color.Red;
                         break;
                     case NetStatus.Connected:
-                        lblDBConnectStaus.Text = "已连接";
-                        lblDBConnectStaus.ForeColor = Color.Green;
+                        lblDBLConnectStaus.Text = "已连接";
+                        lblDBLConnectStaus.ForeColor = Color.Green;
+                        break;
+                    default:
+                        break;
+                }
+            }));
+        }
+
+
+        /// <summary>
+        /// 与数据库连接状态改变事件
+        /// </summary>
+        private void DBR_ConnectionStatusChanged(object sender, StatusEventArgs e)
+        {
+            lblDBRConnectStaus.BeginInvoke(new MethodInvoker(() =>
+            {
+                switch (e.Status)
+                {
+                    case NetStatus.DisConnected:
+                        lblDBRConnectStaus.Text = "断开";
+                        lblDBRConnectStaus.ForeColor = Color.Red;
+                        break;
+                    case NetStatus.Connected:
+                        lblDBRConnectStaus.Text = "已连接";
+                        lblDBRConnectStaus.ForeColor = Color.Green;
                         break;
                     default:
                         break;
@@ -184,7 +209,7 @@ namespace ZIT.EMERGENCY.UI
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-
+         
 
         }
     }

@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using ZIT.EMERGENCY.DataAccess;
+using ZIT.EMERGENCY.fnDataAccess;
 
 namespace ZIT.EMERGENCY.Controller.DataAnalysis
 {
-    public class ConnectTest
+    public class ConnectTestRemote
     {
         private bool blConnected;
 
         private Thread td;
 
-        public ConnectTest()
+        public ConnectTestRemote()
         {
             td = new Thread(new ThreadStart(Todo));
-            ConnTest = DataAccess.DataAccess.GetDBConnTest();
+            ConnTest = DataAccess.GetDBConnTestRemote();
             blConnected = false;
         }
 

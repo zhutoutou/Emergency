@@ -4,17 +4,17 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.OracleClient;
-using ZIT.EMERGENCY.DataAccess;
+using ZIT.EMERGENCY.fnDataAccess;
 using ZIT.EMERGENCY.Model;
 using ZIT.EMERGENCY.Utility;
 
-namespace ZIT.EMERGENCY.DataAccess.Oracle
+namespace ZIT.EMERGENCY.fnDataAccess.Oracle
 {
-    class DBConnTest : IDBConnTest
+    class DBConnTestLocal : IDBConnTest
     {
         public bool DBIsConnected()
         {
-            bool bIsConnected = DbHelperOra.IsConnected(SysParameters.DBConnectString);
+            bool bIsConnected = DB120Help.IsConnected();
             return bIsConnected;
         }
         

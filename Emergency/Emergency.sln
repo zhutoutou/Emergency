@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOG", "LOG\LOG.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{823E8728-7F58-4FCF-B3AC-33D86B2FABBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F639F7FF-C459-4ED8-B3C7-1396A8B6A62A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fnDataAccess", "DataAccess\fnDataAccess.csproj", "{F639F7FF-C459-4ED8-B3C7-1396A8B6A62A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{7BB57E03-892A-402F-AF95-BB1293ABF2D3}"
 EndProject

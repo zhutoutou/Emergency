@@ -8,7 +8,7 @@
     <ProjectGuid>{F639F7FF-C459-4ED8-B3C7-1396A8B6A62A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZIT.EMERGENCY.DataAccess</RootNamespace>
+    <RootNamespace>ZIT.EMERGENCY.fnDataAccess</RootNamespace>
     <AssemblyName>DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,15 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandInfo.cs" />
-    <Compile Include="IDBsendNewInfo.cs" />
+    <Compile Include="IDataExChangeDataAccess.cs" />
+    <Compile Include="IGetDataAccess.cs" />
     <Compile Include="Mysql\DBConnTest.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="Mysql\DbHelperMySQL.cs" />
     <Compile Include="IDBConnTest.cs" />
-    <Compile Include="Oracle\DBConnTest.cs" />
-    <Compile Include="Oracle\DbHelperOra.cs" />
-    <Compile Include="Oracle\DbHelperLocal.cs" />
-    <Compile Include="Oracle\DBsendNewInfo.cs" />
+    <Compile Include="Oracle\DataExChangeDataAccess.cs" />
+    <Compile Include="Oracle\DBConnTestLocal.cs" />
+    <Compile Include="Oracle\DBConnTestRemote.cs" />
+    <Compile Include="Oracle\GetDataAccess.cs" />
+    <Compile Include="Oracle\SQL\DataExchangeDataAccessSelectSql.cs" />
+    <Compile Include="Oracle\SQL\DataExchangeDataAccessSql.cs" />
+    <Compile Include="Oracle\SQL\DataExchangeDataAccessUpdateSql.cs" />
+    <Compile Include="Oracle\SQL\GetDataSql.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -23,11 +23,16 @@ namespace ZIT.EMERGENCY.Controller
         /// <summary>
         /// 数据库连接状态变化事件
         /// </summary>
-        public event EventHandler<StatusEventArgs> DBConnectStatusChanged;
+        public event EventHandler<StatusEventArgs> DBLConnectStatusChanged;
+
+
+        public event EventHandler<StatusEventArgs> DBRConnectStatusChanged;
 
         public GServer gs;
 
-        internal ConnectTest CT;
+        internal ConnectTestLocal CTL;
+
+        internal ConnectTestRemote CTR;
 
         internal SendNewInfo SN;
 
@@ -52,7 +57,8 @@ namespace ZIT.EMERGENCY.Controller
             gs = new GServer();
             gs.strRemoteIP = SysParameters.GServerIP;
             gs.nLocalPort = SysParameters.GLocalPort;
-            CT = new ConnectTest();
+            CTL = new ConnectTestLocal();
+            CTR = new ConnectTestRemote();
             SN = new SendNewInfo();
 
 
@@ -72,9 +78,15 @@ namespace ZIT.EMERGENCY.Controller
             catch (Exception ex) { LOG.LogHelper.WriteLog("UDP业务服务器启动失败", ex); }
 
             //启动数据库连接检测线程
-            CT.ConnectionStatusChanged += DBConnect_StatusChanged;
-            CT.Start();
-            LogHelper.WriteLog("数据库连接检测线程已启动");
+            CTL.ConnectionStatusChanged += DBLConnect_StatusChanged;
+            CTL.Start();
+            LogHelper.WriteLog("本地数据库连接检测线程已启动");
+
+
+            //启动数据库连接检测线程
+            CTR.ConnectionStatusChanged += DBRConnect_StatusChanged;
+            CTR.Start();
+            LogHelper.WriteLog("对方数据库连接检测线程已启动");
 
             //启动SendNewInfo数据库析服务
             SN.Start();
@@ -94,11 +106,15 @@ namespace ZIT.EMERGENCY.Controller
         {
             OnBServerConnectionStatusChanged(e.Status);
         }
-        private void DBConnect_StatusChanged(object sender, StatusEventArgs e)
+        private void DBLConnect_StatusChanged(object sender, StatusEventArgs e)
         {
-            OnDBConnectStatusChanged(e.Status);
+            OnDBLConnectStatusChanged(e.Status);
         }
 
+        private void DBRConnect_StatusChanged(object sender, StatusEventArgs e)
+        {
+            OnDBRConnectStatusChanged(e.Status);
+        }
         /// <summary>
         /// Raises BServerConnectionStatusChanged event.
         /// </summary>
@@ -116,137 +132,21 @@ namespace ZIT.EMERGENCY.Controller
         /// Raises DBConnectStatusChanged event.
         /// </summary>
         /// <param name="message">Received message</param>
-        protected virtual void OnDBConnectStatusChanged(NetStatus status)
+        protected virtual void OnDBLConnectStatusChanged(NetStatus status)
         {
-            var handler = DBConnectStatusChanged;
+            var handler = DBLConnectStatusChanged;
             if (handler != null)
             {
                 handler(this, new StatusEventArgs(status));
             }
         }
-        //
-        // 摘要:
-        //     卡类型的值对关系
-        //
-        // 参数:
-        //   XB:
-        //     卡类型
-        //
-        //   type:
-        //     类型为文字转数字，则为 0；否则为 1。
-        //
-        public static string GetKLX(string KLX, int type)
-        {
-            KLX = KLX.Trim();
-            if (type == 0)
-            {
-                switch (KLX)
-                {
-                    case "0":
-                        KLX = "社保卡";
-                        break;
-                    case "1":
-                        KLX = "农保卡";
-                        break;
-                    case "2":
-                        KLX = "通用就诊卡";
-                        break;
-                    case "8":
-                        KLX = "身份证";
-                        break;
-                    case "9":
-                        KLX = "其他";
-                        break;
-                    case "A":
-                        KLX = "健康档案卡";
-                        break;
-                    default:
-                        KLX = "其他";
-                        break;
-                }
-                return KLX;
-            }
-            else
-            {
-                switch (KLX)
-                {
-                    case "社保卡":
-                        KLX = "0";
-                        break;
-                    case "农保卡":
-                        KLX = "1";
-                        break;
-                    case "通用就诊卡":
-                        KLX = "2";
-                        break;
-                    case "身份证":
-                        KLX = "8";
-                        break;
-                    case "其他":
-                        KLX = "9";
-                        break;
-                    case "健康档案卡":
-                        KLX = "A";
-                        break;
-                    default:
-                        KLX = "9";
-                        break;
-                }
-                return KLX;
-            }
-        }
 
-        //
-        // 摘要:
-        //     性别的值对关系
-        //
-        // 参数:
-        //   XB:
-        //     性别
-        //
-        //   type:
-        //     类型为文字转数字，则为 0；否则为 1。
-        //
-        public static string GetXB(string XB, int type)
+        protected virtual void OnDBRConnectStatusChanged(NetStatus status)
         {
-            XB = XB.Trim();
-            if (type == 0)
+            var handler = DBRConnectStatusChanged;
+            if (handler != null)
             {
-                switch (XB)
-                {
-                    case "0":
-                        XB = "未知";
-                        break;
-                    case "1":
-                        XB = "男";
-                        break;
-                    case "2":
-                        XB = "女";
-                        break;
-                    default:
-                        XB = "未知";
-                        break;
-                }
-                return XB;
-            }
-            else
-            {
-                switch (XB)
-                {
-                    case "未知":
-                        XB = "0";
-                        break;
-                    case "男":
-                        XB = "1";
-                        break;
-                    case "女":
-                        XB = "2";
-                        break;
-                    default:
-                        XB = "0";
-                        break;
-                }
-                return XB;
+                handler(this, new StatusEventArgs(status));
             }
         }
  
