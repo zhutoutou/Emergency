@@ -61,14 +61,17 @@ namespace ZIT.EMERGENCY.Controller.DataAnalysis
                         }
                         n_Veh = 0;
                     }
-                    n_ALAEM++;
-                    n_Veh++;
+                    
 
                 }
                 catch (Exception ex)
                 {
+                    n_ALAEM = 0;
+                    n_Veh = 0;
                     LOG.LogHelper.WriteLog("程序异常!", ex);
                 }
+                n_ALAEM++;
+                n_Veh++;
                 Thread.Sleep(60 * 1000);
             }
         

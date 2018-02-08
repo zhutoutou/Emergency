@@ -66,23 +66,24 @@ namespace ZIT.EMERGENCY.fnDataAccess.Oracle
                 DataTable dt = DB120Help.GetRecord(GetDataSql.GetSSVehDataStr());
                 foreach (DataRow r in dt.Rows)
                 {
+                    VEHICLEREALSTATUS aci = new VEHICLEREALSTATUS();
                     try
                     {
-                        VEHICLEREALSTATUS aci = new VEHICLEREALSTATUS();
+                        
 
                         aci.VEHICLENAME = r["VEHICLENAME"].ToString();
                         aci.VEHICLECARD = r["VEHICLECARD"].ToString();
                         aci.VEHICLEDEPARTMENT = r["VEHICLEDEPARTMENT"].ToString();
                         aci.STATUS = r["STATUS"].ToString();
-                        aci.JD = float.Parse(r["JD"].ToString());
-                        aci.WD = float.Parse(r["WD"].ToString());
+                        aci.JD = double.Parse(r["JD"].ToString());
+                        aci.WD = double.Parse(r["WD"].ToString());
                         aci.LASTTIME = DateTime.Now;
                         aci.READFLAG = 1;
                         list.Add(aci);
                     }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        LogHelper.WriteLog( aci.VEHICLENAME + ex.Message);
                     }
                 }
                 return list;
@@ -132,8 +133,8 @@ namespace ZIT.EMERGENCY.fnDataAccess.Oracle
                         aci.VEHICLECARD = r["VEHICLECARD"].ToString();
                         aci.VEHICLEDEPARTMENT = r["VEHICLEDEPARTMENT"].ToString();
 
-                        aci.JD = float.Parse(r["JD"].ToString());
-                        aci.WD = float.Parse(r["WD"].ToString());
+                        aci.JD = double.Parse(r["JD"].ToString());
+                        aci.WD = double.Parse(r["WD"].ToString());
                         aci.REPORTTIME = DateTime.Now;
                         aci.READFLAG = 1;
                         list.Add(aci);
